@@ -1,0 +1,8 @@
+{
+  "name": "radon",
+  "displayName": "Radon (A HQL Client)",
+  "author": "Atomic Laboratories",
+  "main": "Radon.Radon",
+  "description": "A Mindustry HQL library. Interact with a SQL database",
+  "version": "1.0.0"
+}

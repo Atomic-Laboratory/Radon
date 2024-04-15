@@ -1,0 +1,84 @@
+apply plugin: "java"
+apply plugin: 'maven-publish'
+
+version '1.0'
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+sourceSets.main.java.srcDirs = ["src"]
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories{
+    mavenCentral()
+    maven{ url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
+    maven{ url 'https://www.jitpack.io' }
+}
+
+ext{
+    //the build number that this plugin is made for
+    mindustryVersion = 'v146'
+    jabelVersion = "93fde537c7"
+}
+
+dependencies{
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+    annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+    //hibernate sql entity manager
+    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+    implementation 'org.hibernate:hibernate-entitymanager:5.6.15.Final'
+
+    //SQL connectors
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    //implementation 'com.microsoft.sqlserver:mssql-jdbc:12.7.0.jre11-preview'
+    //implementation 'com.oracle.database.jdbc:ojdbc11:23.3.0.23.09'
+    //implementation 'org.postgresql:postgresql:42.7.3'
+    //implementation 'org.xerial:sqlite-jdbc:3.45.2.0'
+    //implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+}
+
+sourceSets {
+    main {
+        java {
+            exclude '**/example/*.java'
+        }
+    }
+}
+
+jar{
+    archiveFileName = "${project.archivesBaseName}.jar"
+    from{
+        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+
+    from(rootDir){
+        include "plugin.json"
+    }
+}
+
+tasks.named("jar") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+// Maven needs a group, this one should do the trick, or if you feeling fancy, your reversed domain name "net.ddns.atomic_laboratory"
+group = "com.github.Atomic-Laboratory"
+
+java {
+    // Publishes the javadoc of your plugin
+    withJavadocJar()
+    // Publishes the sources of your plugin for IDEs
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        register("main", MavenPublication) {
+            it.from components.java
+        }
+    }
+}
