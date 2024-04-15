@@ -78,7 +78,7 @@ public class Example extends Plugin {
 
 #### MySql Server
 Google how to install a MySql server, or chatGPT it. The following is a basic, not all-encompassing guide for linux.
-1) Install MySql on your server.
+1) Install MySql on your server.  
     `sudo apt install -y mysql-server`
 2) Go through basic configuration of the MySql server  
     `sudo mysql_secure_installation`
