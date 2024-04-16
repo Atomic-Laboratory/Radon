@@ -112,7 +112,7 @@ dependencies {
 In your plugins.json, append the following:
 ```json
 "dependencies": [
-"adon"
+"radon"
 ]
 ```
 
